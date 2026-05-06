@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "Movie Catalog API",
+    "description": "Complete CRUD API for Movie Catalog Management System",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Get All Movies",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/movies",
+        "description": "Fetch all movies from the database"
+      }
+    },
+    {
+      "name": "Add New Movie",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5000/api/movies",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Inception\",\n  \"director\": \"Christopher Nolan\",\n  \"genre\": \"Sci-Fi\",\n  \"releaseYear\": 2010,\n  \"rating\": 8.8,\n  \"duration\": 148,\n  \"language\": \"English\"\n}"
+        },
+        "description": "Add a new movie to the catalog"
+      }
+    },
+    {
+      "name": "Get Movie by ID",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/movies/:id",
+        "description": "Get a specific movie by its MongoDB ID (replace :id with actual ID from Get All Movies response)"
+      }
+    },
+    {
+      "name": "Update Movie",
+      "request": {
+        "method": "PUT",
+        "url": "http://localhost:5000/api/movies/:id",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rating\": 9.0,\n  \"duration\": 150\n}"
+        },
+        "description": "Update specific fields of a movie (replace :id with actual ID)"
+      }
+    },
+    {
+      "name": "Delete Movie",
+      "request": {
+        "method": "DELETE",
+        "url": "http://localhost:5000/api/movies/:id",
+        "description": "Delete a movie from the catalog (replace :id with actual ID)"
+      }
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/health",
+        "description": "Check if server is running"
+      }
+    }
+  ]
+}

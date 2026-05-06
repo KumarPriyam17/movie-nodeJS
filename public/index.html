@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Movie Playlist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    h1 { color: #333; }
+    input, select { padding: 8px; margin: 5px; width: 200px; }
+    button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+    .movie { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+    .movie p { margin: 5px 0; }
+    .delete-btn { background: red; color: white; }
+    .add-btn { background: green; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Movie Playlist</h1>
+  
+  <div>
+    <h2>Add Movie</h2>
+    <input id="title" placeholder="Title" required>
+    <input id="director" placeholder="Director" required>
+    <input id="genre" placeholder="Genre">
+    <input id="year" type="number" placeholder="Year">
+    <input id="rating" type="number" placeholder="Rating">
+    <input id="duration" type="number" placeholder="Duration">
+    <button class="add-btn" onclick="addMovie()">Add</button>
+  </div>
+
+  <div>
+    <h2>Movies</h2>
+    <div id="movies"></div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:5000/api/movies';
+
+    // Load movies
+    async function loadMovies() {
+      const res = await fetch(API);
+      const movies = await res.json();
+      
+      let html = '';
+      for (let m of movies) {
+        html += `
+          <div class="movie">
+            <p><strong>${m.title}</strong> - ${m.director}</p>
+            <p>Genre: ${m.genre} | Year: ${m.releaseYear} | Rating: ${m.rating} | Duration: ${m.duration} min</p>
+            <button onclick="deleteMovie('${m._id}')">Delete</button>
+          </div>
+        `;
+      }
+      document.getElementById('movies').innerHTML = html;
+    }
+
+    // Add movie
+    async function addMovie() {
+      const data = {
+        title: document.getElementById('title').value,
+        director: document.getElementById('director').value,
+        genre: document.getElementById('genre').value,
+        releaseYear: document.getElementById('year').value,
+        rating: document.getElementById('rating').value,
+        duration: document.getElementById('duration').value,
+        language: 'English'
+      };
+
+      await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById('title').value = '';
+      document.getElementById('director').value = '';
+      loadMovies();
+    }
+
+    // Delete movie
+    async function deleteMovie(id) {
+      await fetch(`${API}/${id}`, { method: 'DELETE' });
+      loadMovies();
+    }
+
+    loadMovies();
+  </script>
+</body>
+</html>
